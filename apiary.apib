@@ -3,40 +3,18 @@ HOST: http://localhost:5000
 
 # Device Management API
 
-Device manager is responsible for management operations (CRUD) over devices and templates.
-
-All devices are created based on a *template*, which can be thought as a model of a device. 
-As "model" we could think of part numbers or product models - one *prototype* from which 
-devices are created. Templates in dojot have one label (any alphanumeric sequece), a list 
-of attributes which will hold all the device emitted information, and optionally a few 
-special attributes which will indicate how the device communicates, including transmission 
-methods (protocol, ports, etc.) and message formats.
-
-In fact, templates can represent not only "device models", but it can also abstract a 
-"class of devices". For instance, we could have one template to represent all thermometers 
-that will be used in dojot. This template would have only one attribute called, let's say, 
-"temperature". While creating the device, the user would select its "physical template", 
-let's say *TexasInstr882*, and the 'thermometer' template. The user would have also to 
-add translation instructions in order to map the temperature reading that will be sent 
-from the device to a "temperature" attribute.
-
-In order to create a device, a user selects which templates are going to compose this new 
-device. All their attributes are merged together and associated to it - they are tightly 
-linked to the original template so that any template update will reflect all associated 
-devices.
-
-This document describes the APIs using DeviceManager as a standalone process. If used with 
-other dojot's components, the endpoints might be changed a bit. Check [dojot's 
+This document describes the APIs using DeviceManager as a standalone process. If used with
+other dojot's components, the endpoints might be changed a bit. Check [dojot's
 documentation](http://dojotdocs.readthedocs.io/) to check all of them.
 
 # Group Templates
-Before describing the device APIs, we must detail the template endpoints. As said before, 
-templates are a way to describe the "device model", or, more abstractly, a "device class". 
-These templates contains all the attributes that will be applied to the device. 
-Always remember that they can (and eventually will) be merged into one to create a 
-single device - they must not have attributes with the same name. If this is inevitable, 
-a tag could be added to the attribute name and, while creating the device, translation 
-instructions could be created in order to map each attribute from the incoming message 
+Before describing the device APIs, we must detail the template endpoints. As said before,
+templates are a way to describe the "device model", or, more abstractly, a "device class".
+These templates contains all the attributes that will be applied to the device.
+Always remember that they can (and eventually will) be merged into one to create a
+single device - they must not have attributes with the same name. If this is inevitable,
+a tag could be added to the attribute name and, while creating the device, translation
+instructions could be created in order to map each attribute from the incoming message
 to the appropriate device attribute.
 
 ## Templates [/template]
@@ -70,33 +48,56 @@ Register a new template
 
 + Response 200 (application/json)
 
+    + Body
+
             {
                 "result": "ok",
                 "template": {
-                    "created": "2017-12-20T18:38:48.983342+00:00",
-                    "attrs": [
-                        {
-                            "template_id": "83af",
-                            "created": "2017-12-20T18:38:48.985280+00:00",
-                            "label": "temperature",
-                            "value_type": "float",
-                            "type": "dynamic",
-                            "id": 9
-                        },
-                        {
-                            "template_id": "83af",
-                            "created": "2017-12-20T18:38:48.988103+00:00",
-                            "label": "model-id",
-                            "value_type": "string",
-                            "type": "static",
-                            "static_value" : "model-001",
-                            "id": 10
-                        }
+                    "created": "2018-02-27T14:03:48.857311+00:00",
+                    "data_attrs": [
+                    {
+                        "template_id": "10",
+                        "created": "2018-02-27T14:03:48.859440+00:00",
+                        "label": "temperature",
+                        "value_type": "float",
+                        "type": "dynamic",
+                        "id": 19
+                    },
+                    {
+                        "static_value": "model-001",
+                        "created": "2018-02-27T14:03:48.861690+00:00",
+                        "label": "model-id",
+                        "value_type": "string",
+                        "type": "static",
+                        "id": 20,
+                        "template_id": "10"
+                    }
                     ],
-                    "id": "83af",
-                    "label": "SensorModel"
+                    "label": "SensorModel",
+                    "config_attrs": [],
+                    "attrs": [
+                    {
+                        "template_id": "10",
+                        "created": "2018-02-27T14:03:48.859440+00:00",
+                        "label": "temperature",
+                        "value_type": "float",
+                        "type": "dynamic",
+                        "id": 19
+                    },
+                    {
+                        "static_value": "model-001",
+                        "created": "2018-02-27T14:03:48.861690+00:00",
+                        "label": "model-id",
+                        "value_type": "string",
+                        "type": "static",
+                        "id": 20,
+                        "template_id": "10"
+                    }
+                    ],
+                    "id": 10
                 }
             }
+
 
 + Response 400 (application/json)
 
@@ -130,163 +131,81 @@ Get the full list of templates with all their associated attributes.
 + Response 200 (application/json)
 
             {
-              "templates": [
-                {
-                  "created": "2018-01-09T10:38:55.153648+00:00",
-                  "data_attrs": [
+                "templates": [
                     {
-                      "template_id": "2",
-                      "created": "2018-01-09T10:38:55.159740+00:00",
-                      "label": "doorStatus",
-                      "value_type": "string",
-                      "type": "dynamic",
-                      "id": 3
-                    },
-                    {
-                      "template_id": "2",
-                      "created": "2018-01-09T10:38:55.160623+00:00",
-                      "label": "temp",
-                      "value_type": "string",
-                      "type": "dynamic",
-                      "id": 4
-                    },
-                    {
-                      "template_id": "2",
-                      "created": "2018-01-09T10:38:55.161061+00:00",
-                      "label": "id",
-                      "value_type": "string",
-                      "type": "static",
-                      "id": 5
+                    "created": "2018-02-27T16:10:23.173565+00:00",
+                    "data_attrs": [
+                        {
+                        "template_id": "1",
+                        "created": "2018-02-27T16:10:23.175625+00:00",
+                        "label": "temperature",
+                        "value_type": "float",
+                        "type": "dynamic",
+                        "id": 1
+                        },
+                        {
+                        "static_value": "model-001",
+                        "created": "2018-02-27T16:10:23.178557+00:00",
+                        "label": "model-id",
+                        "value_type": "string",
+                        "type": "static",
+                        "id": 2,
+                        "template_id": "1"
+                        }
+                    ],
+                    "label": "SensorModel",
+                    "config_attrs": [],
+                    "attrs": [
+                        {
+                        "static_value": "model-001",
+                        "created": "2018-02-27T16:10:23.178557+00:00",
+                        "label": "model-id",
+                        "value_type": "string",
+                        "type": "static",
+                        "id": 2,
+                        "template_id": "1"
+                        },
+                        {
+                        "template_id": "1",
+                        "created": "2018-02-27T16:10:23.175625+00:00",
+                        "label": "temperature",
+                        "value_type": "float",
+                        "type": "dynamic",
+                        "id": 1
+                        }
+                    ],
+                    "id": 1
                     }
-                  ],
-                  "label": "container",
-                  "config_attrs": [
-                    {
-                      "template_id": "2",
-                      "created": "2018-01-09T10:38:55.161466+00:00",
-                      "label": "protocol",
-                      "value_type": "string",
-                      "type": "meta",
-                      "id": 6
-                    },
-                    {
-                      "template_id": "2",
-                      "created": "2018-01-09T10:38:55.161874+00:00",
-                      "label": "topic",
-                      "value_type": "string",
-                      "type": "mqtt_meta",
-                      "id": 7
-                    }
-                  ],
-                  "attrs": [
-                    {
-                      "template_id": "2",
-                      "created": "2018-01-09T10:38:55.159740+00:00",
-                      "label": "doorStatus",
-                      "value_type": "string",
-                      "type": "dynamic",
-                      "id": 3
-                    },
-                    {
-                      "template_id": "2",
-                      "created": "2018-01-09T10:38:55.160623+00:00",
-                      "label": "temp",
-                      "value_type": "string",
-                      "type": "dynamic",
-                      "id": 4
-                    },
-                    {
-                      "template_id": "2",
-                      "created": "2018-01-09T10:38:55.161061+00:00",
-                      "label": "id",
-                      "value_type": "string",
-                      "type": "static",
-                      "id": 5
-                    },
-                    {
-                      "template_id": "2",
-                      "created": "2018-01-09T10:38:55.161466+00:00",
-                      "label": "protocol",
-                      "value_type": "string",
-                      "type": "meta",
-                      "id": 6
-                    },
-                    {
-                      "template_id": "2",
-                      "created": "2018-01-09T10:38:55.161874+00:00",
-                      "label": "topic",
-                      "value_type": "string",
-                      "type": "mqtt_meta",
-                      "id": 7
-                    }
-                  ],
-                  "id": 2
+                ],
+                "pagination": {
+                    "has_next": false,
+                    "next_page": null,
+                    "total": 1,
+                    "page": 1
                 }
-              ],
-              "pagination": {
-                "has_next": false,
-                "next_page": null,
-                "total": 1,
-                "page": 1
-              }
             }
+
 
 
 ## Template info [/template/{id}]
 Access a specific template
 + parameters
-    + id: `83af` (required, string) - The template ID
-
-### Delete template [DELETE]
-Removes a template. If any device is based on the template being removed, then all its attributes will be also removed.
-+ Response 200 (application/json)
-
-            {
-                "removed": {
-                    "attrs": [
-                        {
-                            "created": "2017-12-27T15:22:13.331950+00:00",
-                            "id": 9,
-                            "label": "temperature",
-                            "template_id": "83af",
-                            "type": "dynamic",
-                            "value_type": "float"
-                        },
-                        {
-                            "created": "2017-12-27T15:22:13.334498+00:00",
-                            "id": 10,
-                            "label": "model-id",
-                            "static_value": "model-001",
-                            "template_id": "83af",
-                            "type": "static",
-                            "value_type": "string"
-                        }
-                    ],
-                    "created": "2017-12-27T15:22:13.330246+00:00",
-                    "id": "83af",
-                    "label": "SensorModel"
-                },
-                "result": "ok"
-            }
-
-
-+ Response 404 (application/json)
-
-            {
-                "message": "No such template: 123",
-                "status": 404
-            }
+    + id: 4865 (required, integer) - The template ID
 
 
 ### Get template info [GET /template/{id}{?attr_format}]
 Retrieves all information from a specific template
-
 + Parameters
     + attr_format: "both" (string, optional)
 
         Must be one of "both", "single" (if 'data_attrs' and 'config_attrs' are to be omited)
         or "split" (if 'attrs' list is to be omited). 'attrs' field will always contain all
         template attributes that are listed by both 'data_attrs' and 'config_attrs'.
+
++ Request
+    + Headers
+
+            Authorization: Bearer JWT
 
 + Response 200 (application/json)
 
@@ -402,16 +321,6 @@ All devices based on this template will be also updated.
                 "label": "SensorModel",
                 "attrs": [
                     {
-                        "label": "temperature",
-                        "type": "dynamic",
-                        "value_type": "float"
-                    },
-                    {
-                        "label": "pressure",
-                        "type": "dynamic",
-                        "value_type": "float"
-                    },
-                    {
                         "label": "led",
                         "type": "dynamic",
                         "value_type": "bool"
@@ -431,7 +340,7 @@ All devices based on this template will be also updated.
                     "created": "2017-12-20T18:52:34.361828+00:00",
                     "attrs": [
                         {
-                            "template_id": "83af",
+                            "template_id": "4865",
                             "created": "2017-12-20T18:53:19.808891+00:00",
                             "label": "temperature",
                             "value_type": "float",
@@ -439,7 +348,7 @@ All devices based on this template will be also updated.
                             "id": 30
                         },
                         {
-                            "template_id": "83af",
+                            "template_id": "4865",
                             "created": "2017-12-20T18:53:19.809999+00:00",
                             "label": "pressure",
                             "value_type": "float",
@@ -447,7 +356,7 @@ All devices based on this template will be also updated.
                             "id": 31
                         },
                         {
-                            "template_id": "83af",
+                            "template_id": "4865",
                             "created": "2017-12-20T18:53:19.810846+00:00",
                             "label": "led",
                             "value_type": "bool",
@@ -455,7 +364,7 @@ All devices based on this template will be also updated.
                             "id": 32
                         },
                         {
-                            "template_id": "83af",
+                            "template_id": "4865",
                             "created": "2017-12-20T18:53:19.811781+00:00",
                             "label": "fan",
                             "value_type": "bool",
@@ -463,7 +372,7 @@ All devices based on this template will be also updated.
                             "id": 33
                         }
                     ],
-                    "id": "83af",
+                    "id": "4865",
                     "label": "SensorModel"
                 },
                 "result": "ok"
@@ -476,150 +385,62 @@ All devices based on this template will be also updated.
                 "status": 404
             }
 
+### Delete template [DELETE]
+Removes a template. If any device is based on the template being removed, then all its attributes will be also removed.
+
++ Request
+    + Headers
+
+            Authorization: Bearer JWT
+
++ Response 200 (application/json)
+
+            {
+                "removed": {
+                    "attrs": [
+                        {
+                            "created": "2017-12-27T15:22:13.331950+00:00",
+                            "id": 9,
+                            "label": "temperature",
+                            "template_id": "4865",
+                            "type": "dynamic",
+                            "value_type": "float"
+                        },
+                        {
+                            "created": "2017-12-27T15:22:13.334498+00:00",
+                            "id": 10,
+                            "label": "model-id",
+                            "static_value": "model-001",
+                            "template_id": "4865",
+                            "type": "static",
+                            "value_type": "string"
+                        }
+                    ],
+                    "created": "2017-12-27T15:22:13.330246+00:00",
+                    "id": "4865",
+                    "label": "SensorModel"
+                },
+                "result": "ok"
+            }
+
+
++ Response 404 (application/json)
+
+            {
+                "message": "No such template: 123",
+                "status": 404
+            }
+
+
 
 # Group Devices
 
 All these endpoints are related to CRUD operations over devices.
 
 ## Devices [/device]
-### Get the current list of devices [GET /device{?page_size,page_num}]
-Get the full list of devices with all their associated attributes.
-Each attribute from *attrs* is the template ID from where the attributes came from.
-In this example, there is only one template (ID 1).
-+ Parameters
-  + page_size: 20 (integer, optional)
-  + page_num: 1 (integer, optional)
-+ Request
-      + Headers
-
-            Authorization: Bearer JWT
-
-+ Response 200 (application/json)
-
-            {
-                "devices": [
-                    {
-                        "attrs": {
-                            "83af": [
-                                {
-                                    "created": "2017-12-20T18:14:43.994796+00:00",
-                                    "id": 30,
-                                    "label": "tag_temperature",
-                                    "template_id": "83af",
-                                    "type": "dynamic",
-                                    "value_type": "float"
-                                },
-                                {
-                                    "created": "2017-12-20T18:14:44.014065+00:00",
-                                    "id": 31,
-                                    "label": "tag_pressure",
-                                    "template_id": "83af",
-                                    "type": "dynamic",
-                                    "value_type": "float"
-                                },
-                                {
-                                    "created": "2017-12-20T18:14:44.015474+00:00",
-                                    "id": 32,
-                                    "label": "tag_led",
-                                    "template_id": "83af",
-                                    "type": "dynamic",
-                                    "value_type": "bool"
-                                },
-                                {
-                                    "created": "2017-12-20T18:14:44.016804+00:00",
-                                    "id": 33,
-                                    "label": "tag_fan",
-                                    "template_id": "83af",
-                                    "type": "dynamic",
-                                    "value_type": "bool"
-                                }
-                            ]
-                        },
-                        "created": "2017-12-20T18:15:08.864677+00:00",
-                        "id": "10cf",
-                        "label": "sensor-4",
-                        "templates": [
-                            "83af"
-                        ]
-                    }
-                ],
-                "pagination": {
-                    "has_next": false,
-                    "next_page": null,
-                    "page": 1,
-                    "total": 1
-                }
-            }
-### Get the current list of devices associated with given template [GET /device/template/{templateid}{?page_size,page_num}]
-Get the full list of devices that belong to a given template..
-+ Parameters
-  + templateid: 1 (integer, required)
-  + page_size: 20 (integer, optional)
-  + page_num: 1 (integer, optional)
-+ Request
-      + Headers
-
-            Authorization: Bearer JWT
-
-+ Response 200 (application/json)
-
-            {
-                "devices": [
-                    {
-                        "attrs": {
-                            "83af": [
-                                {
-                                    "created": "2017-12-20T18:14:43.994796+00:00",
-                                    "id": 30,
-                                    "label": "tag_temperature",
-                                    "template_id": "83af",
-                                    "type": "dynamic",
-                                    "value_type": "float"
-                                },
-                                {
-                                    "created": "2017-12-20T18:14:44.014065+00:00",
-                                    "id": 31,
-                                    "label": "tag_pressure",
-                                    "template_id": "83af",
-                                    "type": "dynamic",
-                                    "value_type": "float"
-                                },
-                                {
-                                    "created": "2017-12-20T18:14:44.015474+00:00",
-                                    "id": 32,
-                                    "label": "tag_led",
-                                    "template_id": "83af",
-                                    "type": "dynamic",
-                                    "value_type": "bool"
-                                },
-                                {
-                                    "created": "2017-12-20T18:14:44.016804+00:00",
-                                    "id": 33,
-                                    "label": "tag_fan",
-                                    "template_id": "83af",
-                                    "type": "dynamic",
-                                    "value_type": "bool"
-                                }
-                            ]
-                        },
-                        "created": "2017-12-20T18:15:08.864677+00:00",
-                        "id": "10cf",
-                        "label": "sensor-4",
-                        "templates": [
-                            "83af"
-                        ]
-                    }
-                ],
-                "pagination": {
-                    "has_next": false,
-                    "next_page": null,
-                    "page": 1,
-                    "total": 1
-                }
-            }
 
 ### Register a new device [POST /device{?count,verbose}]
-Register a new device. In this example, there is already a template (ID 1) 
+Register a new device. In this example, there is already a template (ID 1)
 which describes all the attributes to be applied to this device.
 + Parameters
     + count: 3 (integer, optional)
@@ -677,12 +498,10 @@ which describes all the attributes to be applied to this device.
 
             {"status" : "failed to configure device"}
 
-
-
 ## Device info [/device/{id}]
 Access a specific device
-    + parameters
-      + id: (required, string) - The device ID
++ parameters
+    + id: efac (required, string) - The device ID
 
 ### Get device info [GET]
 Retrieves all information from a specific device
@@ -695,12 +514,12 @@ Retrieves all information from a specific device
 
             {
                 "attrs": {
-                    "83af": [
+                    "4865": [
                         {
                             "created": "2017-12-20T18:14:43.994796+00:00",
                             "id": 30,
                             "label": "tag_temperature",
-                            "template_id": "83af",
+                            "template_id": "4865",
                             "type": "dynamic",
                             "value_type": "float"
                         },
@@ -708,7 +527,7 @@ Retrieves all information from a specific device
                             "created": "2017-12-20T18:14:44.014065+00:00",
                             "id": 31,
                             "label": "tag_pressure",
-                            "template_id": "83af",
+                            "template_id": "4865",
                             "type": "dynamic",
                             "value_type": "float"
                         },
@@ -716,7 +535,7 @@ Retrieves all information from a specific device
                             "created": "2017-12-20T18:14:44.015474+00:00",
                             "id": 32,
                             "label": "tag_led",
-                            "template_id": "83af",
+                            "template_id": "4865",
                             "type": "dynamic",
                             "value_type": "bool"
                         },
@@ -724,7 +543,7 @@ Retrieves all information from a specific device
                             "created": "2017-12-20T18:14:44.016804+00:00",
                             "id": 33,
                             "label": "tag_fan",
-                            "template_id": "83af",
+                            "template_id": "4865",
                             "type": "dynamic",
                             "value_type": "bool"
                         }
@@ -734,7 +553,7 @@ Retrieves all information from a specific device
                 "id": "10cf",
                 "label": "sensor-4",
                 "templates": [
-                    "83af"
+                    "4865"
                 ]
             }
 
@@ -746,68 +565,146 @@ Retrieves all information from a specific device
                 "status": 404
             }
 
-### Delete device [DELETE]
-Removes a device
+
+### Get the current list of devices [GET /device{?page_size,page_num,idsOnly}]
+Get the full list of devices with all their associated attributes.
+Each attribute from *attrs* is the template ID from where the attributes came from.
+In this example, there is only one template (ID 1).
++ Parameters
+    + page_size: 20 (integer, optional)
+    + page_num: 1 (integer, optional)
+    + idsOnly: false (booelan, optional) - Return only the ids of all existing devices. Ignores any `page_size` and `page_num` configurations
+    + attr: (string, optional) - Return only devices that contain an attribute with given value.
+    + label: (string, optional) - Return only devices that are named by the given value.
+
++ Request
+      + Headers
+
+            Authorization: Bearer JWT
+
 + Response 200 (application/json)
 
             {
-                "removed_device": {
-                    "attrs": {
-                        "83af": [
-                            {
-                                "created": "2017-12-20T18:14:43.994796+00:00",
-                                "id": 30,
-                                "label": "tag_temperature",
-                                "template_id": "83af",
-                                "type": "dynamic",
-                                "value_type": "float"
-                            },
-                            {
-                                "created": "2017-12-20T18:14:44.014065+00:00",
-                                "id": 31,
-                                "label": "tag_pressure",
-                                "template_id": "83af",
-                                "type": "dynamic",
-                                "value_type": "float"
-                            },
-                            {
-                                "created": "2017-12-20T18:14:44.015474+00:00",
-                                "id": 32,
-                                "label": "tag_led",
-                                "template_id": "83af",
-                                "type": "dynamic",
-                                "value_type": "bool"
-                            },
-                            {
-                                "created": "2017-12-20T18:14:44.016804+00:00",
-                                "id": 33,
-                                "label": "tag_fan",
-                                "template_id": "83af",
-                                "type": "dynamic",
-                                "value_type": "bool"
-                            }
+                "devices": [
+                    {
+                        "attrs": {
+                            "4865": [
+                                {
+                                    "created": "2017-12-20T18:14:43.994796+00:00",
+                                    "id": 30,
+                                    "label": "tag_temperature",
+                                    "template_id": "4865",
+                                    "type": "dynamic",
+                                    "value_type": "float"
+                                },
+                                {
+                                    "created": "2017-12-20T18:14:44.014065+00:00",
+                                    "id": 31,
+                                    "label": "tag_pressure",
+                                    "template_id": "4865",
+                                    "type": "dynamic",
+                                    "value_type": "float"
+                                },
+                                {
+                                    "created": "2017-12-20T18:14:44.015474+00:00",
+                                    "id": 32,
+                                    "label": "tag_led",
+                                    "template_id": "4865",
+                                    "type": "dynamic",
+                                    "value_type": "bool"
+                                },
+                                {
+                                    "created": "2017-12-20T18:14:44.016804+00:00",
+                                    "id": 33,
+                                    "label": "tag_fan",
+                                    "template_id": "4865",
+                                    "type": "dynamic",
+                                    "value_type": "bool"
+                                }
+                            ]
+                        },
+                        "created": "2017-12-20T18:15:08.864677+00:00",
+                        "id": "10cf",
+                        "label": "sensor-4",
+                        "templates": [
+                            "4865"
                         ]
-                    },
-                    "created": "2017-12-20T18:15:08.864677+00:00",
-                    "id": "10cf",
-                    "label": "sensor-4",
-                    "templates": [
-                        "83af"
-                    ]
-                },
-                "result": "ok"
+                    }
+                ],
+                "pagination": {
+                    "has_next": false,
+                    "next_page": null,
+                    "page": 1,
+                    "total": 1
+                }
             }
 
-+ Response 404 (application/json)
++ Request List only device ids
+    `idsOnly` query parameter set to `true`
+    + Headers
+
+            Authorization: Bearer JWT
+
++ Response 200 (application/json)
+
+            ["4f2b","1e4a","3762"]
+
+### Get the current list of devices associated with given template [GET /device/template/{template_id}{?page_size,page_num}]
+Get the full list of devices that belong to a given template..
++ Parameters
+  + template_id: 4865 (integer, required)
+  + page_size: 20 (integer, optional)
+  + page_num: 1 (integer, optional)
++ Request
+      + Headers
+
+            Authorization: Bearer JWT
+
++ Response 200 (application/json)
 
             {
-                "message": "No such device: aaaa",
-                "status": 404
+                "devices": [
+                    {
+                        "attrs": {
+                            "4865": [
+                                {
+                                    "label": "temperature",
+                                    "type": "dynamic",
+                                    "value_type": "float",
+                                    "created": "2018-03-01T13:53:28.493509+00:00",
+                                    "id": 1415,
+                                    "template_id": "668"
+                                },
+                                {
+                                    "label": "model-id",
+                                    "type": "static",
+                                    "static_value": "model-001",
+                                    "value_type": "string",
+                                    "created": "2018-03-01T13:53:28.494571+00:00",
+                                    "id": 1416,
+                                    "template_id": "668"
+                                }
+                            ]
+                        },
+                        "created": "2017-12-20T18:15:08.864677+00:00",
+                        "id": "10cf",
+                        "label": "sensor-4",
+                        "templates": [
+                            "4865"
+                        ]
+                    }
+                ],
+                "pagination": {
+                    "has_next": false,
+                    "next_page": null,
+                    "page": 1,
+                    "total": 1
+                }
             }
 
+
 ### Update device info [PUT]
-Replaces all attributes from a specific device.
-- TODO: updating devices is not yet working properly.
+Updates a device's configuration
 + Request (application/json)
     + Headers
 
@@ -816,53 +713,45 @@ Replaces all attributes from a specific device.
     + Body
 
             {
-                "device_id": "6888",
-                "frequency": 2000,
-                "label": "test-device",
-                "protocol": "MQTT",
-                "template": "83af"
+              "label": "updated_device",
+              "templates": [4865]
             }
 
 + Response 200 (application/json)
 
             {
-                "device": {
-                    "updated": "2017-10-06T11:00:49.127223+00:00",
-                    "protocol": "MQTT",
-                    "created": "2017-10-06T10:48:18.220313+00:00",
-                    "label": "test-device",
-                    "frequency": 2000,
-                    "attrs": [
-                        {
-                            "template_id": "83af",
-                            "created": "2017-10-06T10:48:15.795690+00:00",
-                            "label": "custom.a",
-                            "value_type": "string",
-                            "type": "dynamic",
-                            "id": 1
-                        },
-                        {
-                            "template_id": "1",
-                            "created": "2017-10-06T10:48:15.797245+00:00",
-                            "label": "custom.b",
-                            "value_type": "string",
-                            "type": "dynamic",
-                            "id": 2
-                        },
-                        {
-                            "template_id": "1",
-                            "created": "2017-10-06T10:48:15.797639+00:00",
-                            "label": "custom.c",
-                            "value_type": "string",
-                            "type": "dynamic",
-                            "id": 3
-                        }
-                    ],
-                    "template": 1,
-                    "device_id": "6888"
+              "device": {
+                "attrs": {
+                  "4865": [
+                    {
+                      "created": "2018-02-08T09:45:31.505301+00:00",
+                      "id": 1,
+                      "label": "a",
+                      "template_id": "1",
+                      "type": "dynamic",
+                      "value_type": "ingeger"
+                    },
+                    {
+                      "created": "2018-02-08T09:45:31.507894+00:00",
+                      "id": 2,
+                      "label": "b",
+                      "template_id": "1",
+                      "type": "dynamic",
+                      "value_type": "integer"
+                    }
+                  ]
                 },
-                "message": "device updated"
+                "created": "2018-02-08T09:51:39.506629+00:00",
+                "id": "06d0",
+                "label": "updated_device",
+                "templates": [
+                  "4865"
+                ],
+                "updated": "2018-02-08T09:52:20.149300+00:00"
+              },
+              "message": "device updated"
             }
+
 
 + Response 400 (application/json)
 
@@ -875,3 +764,106 @@ Replaces all attributes from a specific device.
 + Response 500 (application/json)
 
             {"status" : "failed to update device configuration"}
+
+
+### Configure device [PUT /device/{deviceid}/actuate]
+Send a configuration message to the device to change some of its attributes.
+The target attribute must be of type "actuator".
++ Parameters
+ + deviceid: efac (required, string): Device ID being invoked.
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer JWT
+
+    + Body
+
+            {
+                "topic": "/admin/efac/config",
+                "attrs": {
+                    "temperature" : 10.6,
+                    "fan" : 100
+                }
+            }
+
++ Response 200 (application/json)
+
+            {"status" : "configuration sent to device"}
+
++ Response 403 (application/json)
+
+            {
+                "status" : "some of the attributes are not configurable",
+                "attrs" : ["temperature"]
+            }
+
++ Response 404 (application/json)
+
+            {"status": 404, "message": "No such device: xyzw"}
+
+
+
+### Delete device [DELETE]
+Removes a device
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer JWT
+
++ Response 200 (application/json)
+
+            {
+                "removed_device": {
+                    "attrs": {
+                        "4865": [
+                            {
+                                "created": "2017-12-20T18:14:43.994796+00:00",
+                                "id": 30,
+                                "label": "tag_temperature",
+                                "template_id": "4865",
+                                "type": "dynamic",
+                                "value_type": "float"
+                            },
+                            {
+                                "created": "2017-12-20T18:14:44.014065+00:00",
+                                "id": 31,
+                                "label": "tag_pressure",
+                                "template_id": "4865",
+                                "type": "dynamic",
+                                "value_type": "float"
+                            },
+                            {
+                                "created": "2017-12-20T18:14:44.015474+00:00",
+                                "id": 32,
+                                "label": "tag_led",
+                                "template_id": "4865",
+                                "type": "dynamic",
+                                "value_type": "bool"
+                            },
+                            {
+                                "created": "2017-12-20T18:14:44.016804+00:00",
+                                "id": 33,
+                                "label": "tag_fan",
+                                "template_id": "4865",
+                                "type": "dynamic",
+                                "value_type": "bool"
+                            }
+                        ]
+                    },
+                    "created": "2017-12-20T18:15:08.864677+00:00",
+                    "id": "10cf",
+                    "label": "sensor-4",
+                    "templates": [
+                        "4865"
+                    ]
+                },
+                "result": "ok"
+            }
+
++ Response 404 (application/json)
+
+            {
+                "message": "No such device: aaaa",
+                "status": 404
+            }
